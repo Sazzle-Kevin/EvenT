@@ -13,23 +13,69 @@ export default function Header() {
   };
 
   return (
-    <header className="bg-white shadow-sm border-b border-gray-200">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between h-16">
-          <div className="flex-shrink-0 flex items-center">
-            <Link to="/" className="text-xl font-bold text-gray-900">
-              EventMatic
+    <header className="relative z-20">
+      {/* SVG Filter für Liquid Glass Effekt */}
+      <svg aria-hidden="true" className="absolute inset-0 h-0 w-0">
+        <filter
+          colorInterpolationFilters="sRGB"
+          id="liquid-glass-filter-header"
+          x="-50%"
+          y="-50%"
+          width="200%"
+          height="200%"
+        >
+          <feTurbulence
+            baseFrequency="0.05 0.05"
+            numOctaves="1"
+            result="turbulence"
+            seed="2"
+            type="fractalNoise"
+          />
+          <feGaussianBlur
+            in="turbulence"
+            result="blurredNoise"
+            stdDeviation="2"
+          />
+          <feDisplacementMap
+            in="SourceGraphic"
+            in2="blurredNoise"
+            result="displaced"
+            scale="30"
+            xChannelSelector="R"
+            yChannelSelector="B"
+          />
+          <feGaussianBlur in="displaced" result="finalBlur" stdDeviation="4" />
+          <feComposite in="finalBlur" in2="finalBlur" operator="over" />
+        </filter>
+      </svg>
+
+      {/* Semi-transparenter Container über Video */}
+      <div
+        className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 bg-white/5 dark:bg-black/20 backdrop-blur-md border-b border-[#636367]/10"
+        style={{
+          backdropFilter: "url(#liquid-glass-filter-header)",
+        }}
+      >
+        <div className="flex justify-between h-16 items-center">
+          {/* Logo */}
+          <div className="flex-shrink-0">
+            <Link
+              to="/"
+              className="text-2xl font-bold bg-gradient-to-r from-[#8A9A76] to-[#636367] bg-clip-text text-transparent"
+            >
+              EvenTime
             </Link>
           </div>
 
-          <div className="hidden md:flex space items-center space-x-8">
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex items-center space-x-6">
             <NavLink
               to="/"
               className={({ isActive }) =>
-                `px-3 py-2 rounded-md text-sm font-medium ${
+                `px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
                   isActive
-                    ? "bg-blue-100 text-blue-700"
-                    : "text-gray-700 hover:bg-gray-100"
+                    ? "bg-[#DDC49A]/30 text-[#636367]"
+                    : "text-[#636367] hover:bg-[#DDC49A]/20 hover:text-[#8A9A76]"
                 }`
               }
             >
@@ -40,10 +86,10 @@ export default function Header() {
               <NavLink
                 to="/events/create"
                 className={({ isActive }) =>
-                  `px-3 py-2 rounded-md text-sm font-medium ${
+                  `px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
                     isActive
-                      ? "bg-blue-100 text-blue-700"
-                      : "text-gray-700 hover:bg-gray-100"
+                      ? "bg-[#8A9A76]/20 text-[#636367]"
+                      : "text-[#636367] hover:bg-[#8A9A76]/10 hover:text-[#8A9A76]"
                   }`
                 }
               >
@@ -51,15 +97,16 @@ export default function Header() {
               </NavLink>
             )}
 
+            {/* Auth Controls */}
             <div className="flex items-center space-x-4">
               {isAuthenticated ? (
                 <>
-                  <span className="text-sm text-gray-600">
+                  <span className="text-sm text-[#636367]">
                     Hi, {user?.name || user?.email}
                   </span>
                   <button
                     onClick={handleSignOut}
-                    className="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-100"
+                    className="px-4 py-2 rounded-lg text-sm font-medium text-[#636367] hover:bg-[#8A9A76]/10 transition-colors"
                   >
                     Sign Out
                   </button>
@@ -68,13 +115,13 @@ export default function Header() {
                 <>
                   <Link
                     to="/signin"
-                    className="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-100"
+                    className="px-4 py-2 rounded-lg text-sm font-medium text-[#636367] hover:bg-[#DDC49A]/20 transition-colors"
                   >
                     Sign In
                   </Link>
                   <Link
                     to="/signup"
-                    className="px-3 py-2 rounded-md text-sm font-medium bg-blue-600 text-white hover:bg-blue-700"
+                    className="px-4 py-2 rounded-lg text-sm font-medium bg-[#8A9A76] text-white hover:bg-[#8A9A76]/90 transition-colors shadow-md hover:shadow-lg"
                   >
                     Sign Up
                   </Link>
@@ -84,10 +131,10 @@ export default function Header() {
           </div>
 
           {/* Mobile menu button */}
-          <div className="md:hidden flex items-center">
+          <div className="md:hidden">
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="inline-flex items-center justify-center p-2 rounded-md text-gray-700 hover:bg-gray-100 focus:outline-none"
+              className="inline-flex items-center justify-center p-2 rounded-lg text-[#636367] hover:bg-[#DDC49A]/20 focus:outline-none"
             >
               <span className="sr-only">Open main menu</span>
               <svg
@@ -110,58 +157,58 @@ export default function Header() {
             </button>
           </div>
         </div>
-      </div>
 
-      {/* Mobile menu */}
-      {isMobileMenuOpen && (
-        <div className="md:hidden border-t border-gray-200">
-          <div className="px-2 pt-2 pb-3 space-y-1">
-            <Link
-              to="/"
-              className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-100"
-              onClick={() => setIsMobileMenuOpen(false)}
-            >
-              Home
-            </Link>
-
-            {isAuthenticated && (
+        {/* Mobile menu */}
+        {isMobileMenuOpen && (
+          <div className="md:hidden border-t border-[#636367]/20">
+            <div className="px-2 pt-2 pb-3 space-y-1">
               <Link
-                to="/events/create"
-                className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-100"
+                to="/"
+                className="block px-3 py-2 rounded-lg text-base font-medium text-[#636367] hover:bg-[#DDC49A]/20"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
-                Create Event
+                Home
               </Link>
-            )}
 
-            {isAuthenticated ? (
-              <button
-                onClick={handleSignOut}
-                className="w-full text-left px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-100"
-              >
-                Sign Out
-              </button>
-            ) : (
-              <>
+              {isAuthenticated && (
                 <Link
-                  to="/signin"
-                  className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-100"
+                  to="/events/create"
+                  className="block px-3 py-2 rounded-lg text-base font-medium text-[#636367] hover:bg-[#8A9A76]/10"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
-                  Sign In
+                  Create Event
                 </Link>
-                <Link
-                  to="/signup"
-                  className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-100"
-                  onClick={() => setIsMobileMenuOpen(false)}
+              )}
+
+              {isAuthenticated ? (
+                <button
+                  onClick={handleSignOut}
+                  className="w-full text-left px-3 py-2 rounded-lg text-base font-medium text-[#636367] hover:bg-[#DDC49A]/20"
                 >
-                  Sign Up
-                </Link>
-              </>
-            )}
+                  Sign Out
+                </button>
+              ) : (
+                <>
+                  <Link
+                    to="/signin"
+                    className="block px-3 py-2 rounded-lg text-base font-medium text-[#636367] hover:bg-[#DDC49A]/20"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    Sign In
+                  </Link>
+                  <Link
+                    to="/signup"
+                    className="block px-3 py-2 rounded-lg text-base font-medium text-[#636367] hover:bg-[#8A9A76]/10"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    Sign Up
+                  </Link>
+                </>
+              )}
+            </div>
           </div>
-        </div>
-      )}
+        )}
+      </div>
     </header>
   );
 }

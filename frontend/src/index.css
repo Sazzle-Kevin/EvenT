@@ -1,1 +1,23 @@
 @import "tailwindcss";
+
+/* Transparente Hintergründe für Liquid Glass Effekt */
+html,
+body {
+  background: transparent;
+  margin: 0;
+}
+
+/* Custom Properties für Farben */
+:root {
+  --color-satin-grey: #636367;
+  --color-beige: #DDC49A;
+  --color-olive: #8A9A76;
+
+  /* Textfarben */
+  --color-text-primary: #2d2d2d;
+  --color-text-secondary: #6b7280;
+
+  /* Hover-Transparenzen */
+  --hover-beige: rgba(221, 196, 154, 0.2);
+  --hover-olive: rgba(138, 154, 118, 0.1);
+}
