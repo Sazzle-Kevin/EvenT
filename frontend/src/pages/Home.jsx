@@ -10,8 +10,18 @@ export default function Home() {
   useEffect(() => {
     const fetchEvents = async () => {
       try {
+        // API returns paginated response: { results: [...], totalCount, totalPages, ... }
         const response = await apiClient.get("/api/events");
-        const eventsData = response.data;
+        let eventsData = [];
+        
+        // Handle both paginated and array responses
+        if (response.data && typeof response.data === 'object') {
+          if (Array.isArray(response.data.results)) {
+            eventsData = response.data.results;
+          } else if (Array.isArray(response.data)) {
+            eventsData = response.data;
+          }
+        }
 
         // Sort events chronologically (by date)
         const sortedEvents = [...eventsData].sort(
@@ -80,13 +90,13 @@ export default function Home() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {events.map((event) => (
               <Link
-                key={event.id || event._id}
-                to={`/events/${event.id || event._id}`}
+                key={event.id}
+                to={`/events/${event.id}`}
                 className="block bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200 overflow-hidden"
               >
                 <div className="p-6">
                   <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                    {event.title || event.name}
+                    {event.title}
                   </h3>
                   <p className="text-gray-600 text-sm mb-3 line-clamp-2">
                     {event.description || "No description available"}

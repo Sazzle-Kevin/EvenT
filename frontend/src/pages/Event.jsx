@@ -1,10 +1,9 @@
 import { useState, useEffect } from "react";
-import { useParams, useNavigate, Link } from "react-router";
+import { useParams, Link } from "react-router";
 import { apiClient } from "../utils/apiClient";
 
 export default function Event() {
   const { id } = useParams();
-  const navigate = useNavigate();
   const [event, setEvent] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -13,7 +12,9 @@ export default function Event() {
     const fetchEvent = async () => {
       try {
         const response = await apiClient.get(`/api/events/${id}`);
-        setEvent(response.data);
+        // Single event returns the event object directly
+        const eventData = response.data;
+        setEvent(eventData);
       } catch (err) {
         if (err.response?.status === 404) {
           setError("Event not found.");
@@ -74,7 +75,7 @@ export default function Event() {
 
         <div className="bg-white rounded-lg shadow-md p-8">
           <h1 className="text-3xl font-bold text-gray-900 mb-6">
-            {event.title || event.name}
+            {event.title}
           </h1>
 
           <div className="space-y-4 text-gray-700">
@@ -112,11 +113,10 @@ export default function Event() {
               </p>
             )}
 
-            {event.attendees && event.attendees.length > 0 && (
+            {event.organizerId && (
               <p>
-                <strong className="text-gray-900">Attendees:</strong>{" "}
-                {event.attendees.length}{" "}
-                {event.attendees.length === 1 ? "person" : "people"}
+                <strong className="text-gray-900">Organizer ID:</strong>{" "}
+                {event.organizerId}
               </p>
             )}
           </div>

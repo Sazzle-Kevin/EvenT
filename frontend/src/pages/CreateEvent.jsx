@@ -7,7 +7,6 @@ export default function CreateEvent() {
   const [description, setDescription] = useState("");
   const [date, setDate] = useState("");
   const [location, setLocation] = useState("");
-  const [category, setCategory] = useState("");
   const [error, setError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
@@ -18,21 +17,22 @@ export default function CreateEvent() {
     setError("");
 
     try {
+      // The backend expects date as ISO string
       const response = await apiClient.post("/api/events", {
         title,
         description,
-        date,
+        date: new Date(date).toISOString(),
         location,
-        category,
       });
 
-      const newEventId = response.data.id || response.data._id;
+      const newEventId = response.data.id;
       navigate(`/events/${newEventId}`);
     } catch (err) {
       if (err.response?.status === 401) {
         setError("Your session has expired. Please sign in again.");
-      } else if (err.response?.data?.message) {
-        setError(err.response.data.message);
+      } else if (err.response?.status === 400) {
+        const message = err.response.data?.message || err.response.data?.error || "Invalid data. Please check your input.";
+        setError(message);
       } else if (err.message === "Network Error") {
         setError("Unable to connect to the server.");
       } else {
@@ -79,6 +79,8 @@ export default function CreateEvent() {
                 type="text"
                 id="title"
                 required
+                minLength={3}
+                maxLength={255}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                 placeholder="Enter event title"
                 value={title}
@@ -96,6 +98,7 @@ export default function CreateEvent() {
               <textarea
                 id="description"
                 rows="4"
+                maxLength={5000}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                 placeholder="Describe your event..."
                 value={description}
@@ -131,33 +134,12 @@ export default function CreateEvent() {
                 type="text"
                 id="location"
                 required
+                maxLength={255}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                 placeholder="Enter event location"
                 value={location}
                 onChange={(e) => setLocation(e.target.value)}
               />
-            </div>
-
-            <div>
-              <label
-                htmlFor="category"
-                className="block text-sm font-medium text-gray-700 mb-2"
-              >
-                Category
-              </label>
-              <select
-                id="category"
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                value={category}
-                onChange={(e) => setCategory(e.target.value)}
-              >
-                <option value="">Select a category</option>
-                <option value="conference">Conference</option>
-                <option value="workshop">Workshop</option>
-                <option value="meetup">Meetup</option>
-                <option value="concert">Concert</option>
-                <option value="other">Other</option>
-              </select>
             </div>
 
             <button

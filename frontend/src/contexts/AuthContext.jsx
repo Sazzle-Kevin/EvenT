@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router";
-import { apiClient, API_BASE_URL } from "../utils/apiClient";
+import { apiClient } from "../utils/apiClient";
 
 const AuthContext = createContext();
 
@@ -27,19 +27,18 @@ export const AuthProvider = ({ children }) => {
       setToken(storedToken);
       // Verify token and fetch user data
       apiClient
-        .get("/api/users/me", {
+        .get("/api/auth/profile", {
           headers: { Authorization: `Bearer ${storedToken}` },
         })
         .then((response) => {
           setUser(response.data);
+          setLoading(false);
         })
         .catch(() => {
           // Token is invalid, clear it
           localStorage.removeItem("token");
           setToken(null);
           setUser(null);
-        })
-        .finally(() => {
           setLoading(false);
         });
     } else {
@@ -53,7 +52,7 @@ export const AuthProvider = ({ children }) => {
       password,
     });
 
-    const { token: authToken, ...userData } = response.data;
+    const { token: authToken, user: userData } = response.data;
     localStorage.setItem("token", authToken);
     setToken(authToken);
     setUser(userData);
@@ -62,13 +61,22 @@ export const AuthProvider = ({ children }) => {
   };
 
   const signUp = async (name, email, password) => {
-    const response = await apiClient.post("/api/users", {
-      name,
+    // Only include name if it's non-empty (name is optional in backend)
+    const payload = { email, password };
+    if (name && name.trim()) {
+      payload.name = name.trim();
+    }
+
+    // Register user
+    await apiClient.post("/api/users", payload);
+
+    // Sign in to get token (users API doesn't return token on registration)
+    const loginResponse = await apiClient.post("/api/auth/login", {
       email,
       password,
     });
 
-    const { token: authToken, ...userData } = response.data;
+    const { token: authToken, user: userData } = loginResponse.data;
     localStorage.setItem("token", authToken);
     setToken(authToken);
     setUser(userData);

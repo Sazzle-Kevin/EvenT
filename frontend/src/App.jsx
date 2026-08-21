@@ -15,16 +15,16 @@ function App() {
         <Route path="/events/create" element={<CreateEvent />} />
       </Route>
 
-      {/* Public routes - wrapped with Interface layout */}
-      <Route element={<Interface />}>
-        <Route path="/" element={<Home />} />
-        <Route path="/events/:id" element={<Event />} />
-      </Route>
-
       {/* Auth pages - only accessible when NOT authenticated */}
       <Route element={<PublicRoute />}>
         <Route path="/signin" element={<SignIn />} />
         <Route path="/signup" element={<SignUp />} />
+      </Route>
+
+      {/* Public routes - wrapped with Interface layout */}
+      <Route element={<Interface />}>
+        <Route path="/" element={<Home />} />
+        <Route path="/events/:id" element={<Event />} />
       </Route>
 
       {/* Catch-all redirect */}
