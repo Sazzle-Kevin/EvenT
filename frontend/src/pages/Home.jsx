@@ -143,20 +143,21 @@ export default function Home() {
           <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 gap-6 auto-rows-[10rem] sm:auto-rows-[12rem]">
             {events.map((event, index) => {
               const size = BENTO_SIZES[index % BENTO_SIZES.length];
+              const imgHeightClass = size.h === 2 ? "h-72" : "h-48";
 
               return (
                 <Link
                   key={event.id}
                   to={`/events/${event.id}`}
-                  className={`group relative overflow-hidden rounded-2xl bg-white/5 backdrop-blur-xl border border-white/10 text-white no-underline shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 col-span-${size.w} row-span-${size.h}`}
+                  className={`group relative overflow-hidden rounded-3xl bg-white/5 backdrop-blur-xl border border-white/10 text-white no-underline shadow-xl hover:shadow-3xl transition-all duration-300 hover:-translate-y-2 col-span-${size.w} row-span-${size.h}`}
                 >
                   <div className="flex flex-col h-full">
-                    {/* Bild-Bereich */}
-                    <div className="relative h-48 overflow-hidden flex-shrink-0">
+                    {/* Bild-Bereich — dynamisch hoch */}
+                    <div className={`relative ${imgHeightClass} overflow-hidden flex-shrink-0`}>
                       <img
                         src={getRandomImage(event)}
                         alt={event.title}
-                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                         loading="lazy"
                         onError={(e) => {
                           e.target.src = `https://picsum.photos/seed/fallback-${event.id}/400/300`;
@@ -167,9 +168,9 @@ export default function Home() {
                       </span>
                     </div>
 
-                    {/* Text-Bereich */}
+                    {/* Text-Bereich — unterhalb Bild */}
                     <div className="p-4 flex-1 flex flex-col">
-                      <h3 className="font-bold text-lg text-white mb-2 line-clamp-1 group-hover:text-[#8A9A76] transition-colors">
+                      <h3 className="font-bold text-xl text-white mb-2 line-clamp-1 group-hover:text-[#8A9A76] transition-colors">
                         {event.title}
                       </h3>
                       <p className="text-white/70 text-sm line-clamp-2 mb-3 flex-1">
