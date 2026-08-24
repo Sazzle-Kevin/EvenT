@@ -104,14 +104,20 @@ export default function Home() {
   return (
     <div className="relative w-full min-h-screen bg-black">
       {/* Background-Video: fixed am Viewport-Rand, z-0 */}
+      {/* onEnded: pausiert beim letzten Frame (frozen) */}
       <video
         ref={videoRef}
         autoPlay
         muted
-        loop
         playsInline
         preload="auto"
         className="fixed inset-0 h-screen w-full object-cover object-top z-0"
+        onEnded={(e) => {
+          // Video endet → pausiere beim letzten Frame
+          const v = e.target;
+          v.pause();
+          v.currentTime = v.duration - 0.1;
+        }}
       >
         <source src="/videos/hero-location-bg.mp4" type="video/mp4" />
       </video>
