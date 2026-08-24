@@ -6,20 +6,10 @@ import DynamicText from "../components/DynamicText";
 const getRandomImage = (event) =>
   `https://picsum.photos/seed/event-${event.id}/400/300`;
 
-// Bento-Seeds: bestimme die relative Größe der Karten
-// Format: { width: 'col-span-X', height: 'row-span-Y' }
-// width: 1 (schmal) | 2 (1.5x breit) | 3 (doppelt breit)
-// height: 1 (normal) | 2 (doppelt hoch)
-const BENTO_SIZES = [
-  { w: 2, h: 1 }, // breit, normal
-  { w: 1, h: 2 }, // schmal, hoch
-  { w: 1, h: 1 }, // schmal, normal
-  { w: 3, h: 1 }, // doppelt breit, normal
-  { w: 1, h: 1 }, // schmal, normal
-  { w: 2, h: 2 }, // breit, hoch
-  { w: 1, h: 1 }, // schmal, normal
-  { w: 2, h: 1 }, // breit, normal
-  { w: 1, h: 2 }, // schmal, hoch
+// Bento-Grid: Jede Karte hat eigene Höhe — organisch, nicht gleichmäßig
+const CARD_HEIGHTS = [
+  "h-[28rem]", "h-[20rem]", "h-[32rem]", "h-[24rem]",
+  "h-[28rem]", "h-[36rem]", "h-[20rem]", "h-[24rem]",
 ];
 
 export default function Home() {
@@ -28,7 +18,6 @@ export default function Home() {
   const [error, setError] = useState("");
   const videoRef = useRef(null);
 
-  // Robustes autoplay
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
@@ -111,7 +100,6 @@ export default function Home() {
 
   return (
     <div className="relative w-full min-h-screen bg-[#64B5F6]">
-      {/* Background-Video: fixed am Viewport-Rand */}
       <video
         ref={videoRef}
         autoPlay
@@ -128,36 +116,29 @@ export default function Home() {
         <source src="/videos/hero-location-bg.mp4" type="video/mp4" />
       </video>
 
-      {/* Hero-Headline */}
       <div className="absolute inset-x-0 top-16 z-30 flex items-center justify-center sm:h-[calc(100vh-4rem)]">
         <DynamicText />
       </div>
 
-      {/* Bento-Grid: Content Layer unterhalb */}
+      {/* True Bento-Grid: individuelle Höhen + asymmetrische Breiten */}
       <div className="relative z-10 max-w-7xl mx-auto px-4 pt-[56.25vw] sm:pt-[120vh] pb-32">
         {events.length === 0 ? (
           <div className="text-center py-12">
             <p className="text-white/70 text-lg">No events available yet.</p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 gap-6 auto-rows-[20rem] sm:auto-rows-[24rem]">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {events.map((event, index) => {
-              const size = BENTO_SIZES[index % BENTO_SIZES.length];
-              // col-span-3 Karten: breiter Bild-Bereich
-              // row-span-2 Karten: doppelter Platz für größeres Bild
-              const imgHeightClass =
-                size.w === 3 ? "h-56" :
-                size.h === 2 ? "h-64" : "h-40";
+              const heightClass = CARD_HEIGHTS[index % CARD_HEIGHTS.length];
 
               return (
                 <Link
                   key={event.id}
                   to={`/events/${event.id}`}
-                  className={`group relative overflow-hidden rounded-3xl bg-white/5 backdrop-blur-xl border border-white/10 text-white no-underline shadow-xl hover:shadow-3xl transition-all duration-300 hover:-translate-y-2 col-span-${size.w} row-span-${size.h} h-[20rem] sm:h-[24rem]`}
+                  className={`group relative overflow-hidden rounded-3xl bg-white/5 backdrop-blur-xl border border-white/10 text-white no-underline shadow-xl hover:shadow-3xl transition-all duration-300 hover:-translate-y-2 ${heightClass}`}
                 >
-                  <div className="flex flex-col h-full">
-                    {/* Bild-Bereich — dynamisch hoch */}
-                    <div className={`relative ${imgHeightClass} overflow-hidden flex-shrink-0`}>
+                  <div className="absolute inset-0 flex flex-col">
+                    <div className="relative h-48 flex-shrink-0 overflow-hidden">
                       <img
                         src={getRandomImage(event)}
                         alt={event.title}
@@ -172,12 +153,11 @@ export default function Home() {
                       </span>
                     </div>
 
-                    {/* Text-Bereich — unterhalb Bild */}
                     <div className="p-4 flex-1 flex flex-col">
                       <h3 className="font-bold text-xl text-white mb-2 line-clamp-1 group-hover:text-[#8A9A76] transition-colors">
                         {event.title}
                       </h3>
-                      <p className="text-white/70 text-sm line-clamp-2 mb-3 flex-1">
+                      <p className="text-white/70 text-sm line-clamp-3 mb-3 flex-1">
                         {event.description || "No description available"}
                       </p>
                       {event.location && (
