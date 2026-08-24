@@ -2,15 +2,15 @@ import { useState } from "react";
 import { NavLink, Link } from "react-router";
 import { useAuth } from "../contexts/AuthContext";
 
-// Silber-Palette für Header (neutral, über Video sichtbar)
+// Weiße Schrift für Header — kontrastreich über dynamischem Video
 const SILVER = {
-  text: "text-gray-200",
-  textHover: "hover:text-white",
-  hoverBg: "hover:bg-gray-700/20",
-  active: "text-gray-100",
-  activeBg: "bg-gray-700/30",
+  text: "text-white",
+  textHover: "",
+  hoverBg: "hover:bg-white/10",
+  active: "text-white",
+  activeBg: "bg-white/15",
   border: "border-gray-500/30",
-  primaryBtn: "bg-gray-600 hover:bg-gray-500",
+  primaryBtn: "bg-[#8A9A76] hover:bg-[#636367]",
 };
 
 export default function Header() {
