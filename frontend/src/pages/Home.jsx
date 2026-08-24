@@ -127,7 +127,7 @@ export default function Home() {
             <p className="text-white/70 text-lg">No events available yet.</p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {events.map((event, index) => {
               const heightClass = CARD_HEIGHTS[index % CARD_HEIGHTS.length];
 
