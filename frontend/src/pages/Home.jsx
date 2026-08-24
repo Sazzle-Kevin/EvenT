@@ -104,6 +104,7 @@ export default function Home() {
   return (
     <div className="relative w-full min-h-screen bg-black">
       {/* Background-Video: fixed am Viewport-Rand, z-0 */}
+      {/* 16:9 Aspect-Ratio auf Mobile, 100vh auf Desktop */}
       {/* onEnded: pausiert beim letzten Frame (frozen) */}
       <video
         ref={videoRef}
@@ -111,7 +112,7 @@ export default function Home() {
         muted
         playsInline
         preload="auto"
-        className="fixed inset-0 h-screen w-full object-cover object-top z-0"
+        className="fixed inset-0 w-full aspect-video sm:h-screen object-cover object-top z-0"
         onEnded={(e) => {
           // Video endet → pausiere beim letzten Frame
           const v = e.target;
@@ -123,12 +124,13 @@ export default function Home() {
       </video>
 
       {/* Hero-Headline: zentriert im Hero-Bereich (über Video + Header) */}
-      <div className="absolute inset-x-0 top-16 z-30 flex h-[calc(100vh-4rem)] items-center justify-center">
+      <div className="absolute inset-x-0 top-16 z-30 flex items-center justify-center sm:h-[calc(100vh-4rem)]">
         <DynamicText />
       </div>
 
-      {/* Content Layer: Event-Karten weit unterhalb des Hero-Videos */}
-      <div className="relative z-10 max-w-7xl mx-auto px-4 pt-[120vh] pb-32">
+      {/* Content Layer: Event-Karten unterhalb des Hero-Videos */}
+      {/* 16:9 Höhe auf Mobile (aspect-ratio), 120vh auf Desktop */}
+      <div className="relative z-10 max-w-7xl mx-auto px-4 pt-[56.25vw] sm:pt-[120vh] pb-32">
         {events.length === 0 ? (
           <div className="text-center py-12">
             <p className="text-white/70 text-lg">No events available yet.</p>
