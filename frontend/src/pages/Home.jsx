@@ -4,8 +4,7 @@ import { apiClient } from "../utils/apiClient";
 import DynamicText from "../components/DynamicText";
 
 const getRandomImage = (event) => {
-  // picsum.photos/seed/{id}: JEDE ID → anderes, unabhängiges Bild (neutrale Natur/Abstract)
-  // source.unsplash.com wird NICHT genutzt (cachet pro Query → alle Karten = gleich)
+  // picsum.photos/seed/{id}: JEDE ID → anderes, unabhängiges Bild
   return `https://picsum.photos/seed/event-${event.id}/400/300`;
 };
 
@@ -27,7 +26,6 @@ export default function Home() {
       });
     };
 
-    // Sofort versuchen, und auch auf User-Event warten
     attemptPlay();
     document.addEventListener("click", attemptPlay, { once: true });
     document.addEventListener("scroll", attemptPlay, { once: true });
@@ -43,15 +41,13 @@ export default function Home() {
       try {
         const response = await apiClient.get("/api/events");
         let eventsData = [];
-
-        if (response.data && typeof response.data === 'object') {
+        if (response.data && typeof response.data === "object") {
           if (Array.isArray(response.data.results)) {
             eventsData = response.data.results;
           } else if (Array.isArray(response.data)) {
             eventsData = response.data;
           }
         }
-
         const sortedEvents = [...eventsData].sort(
           (a, b) => new Date(a.date || a.createdAt) - new Date(b.date || b.createdAt)
         );
@@ -60,9 +56,7 @@ export default function Home() {
         if (err.response?.status === 404) {
           setError("No events found.");
         } else if (err.message === "Network Error") {
-          setError(
-            "Unable to connect to the server. Please make sure the API is running."
-          );
+          setError("Unable to connect to the server. Please make sure the API is running.");
         } else {
           setError("Failed to load events. Please try again later.");
         }
@@ -114,7 +108,6 @@ export default function Home() {
         preload="auto"
         className="fixed inset-0 w-full aspect-video sm:h-screen object-cover object-top z-0"
         onEnded={(e) => {
-          // Video endet → pausiere beim letzten Frame
           const v = e.target;
           v.pause();
           v.currentTime = v.duration - 0.1;
@@ -123,13 +116,13 @@ export default function Home() {
         <source src="/videos/hero-location-bg.mp4" type="video/mp4" />
       </video>
 
-      {/* Hero-Headline: zentriert im Hero-Bereich (über Video + Header) */}
+      {/* Hero-Headline: zentriert im Hero-Bereich */}
       <div className="absolute inset-x-0 top-16 z-30 flex items-center justify-center sm:h-[calc(100vh-4rem)]">
         <DynamicText />
       </div>
 
       {/* Content Layer: Event-Karten unterhalb des Hero-Videos */}
-      {/* 16:9 Höhe auf Mobile (aspect-ratio), 120vh auf Desktop */}
+      {/* Bento-Grid: 2 Rows auf Mobile, 1 Row auf Desktop */}
       <div className="relative z-10 max-w-7xl mx-auto px-4 pt-[56.25vw] sm:pt-[120vh] pb-32">
         {events.length === 0 ? (
           <div className="text-center py-12">
@@ -137,12 +130,18 @@ export default function Home() {
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 sm:grid-rows-2 md:grid-cols-3 md:grid-rows-1 gap-y-8 sm:gap-6 md:gap-12">
-            {events.map((event) => {
+            {events.map((event, index) => {
+              // Bento-Grid: Erste Karte (featured) ist auf Mobile über beide Spalten breit
+              const isFeatured = index === 0;
+              const cardClassName = `group block bg-white/10 backdrop-blur-xl rounded-xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden transform hover:-translate-y-1 border border-white/10 ${
+                isFeatured ? "sm:col-span-2" : ""
+              } h-full`;
+
               return (
                 <Link
                   key={event.id}
                   to={`/events/${event.id}`}
-                  className="group block bg-white/10 backdrop-blur-xl rounded-xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden transform hover:-translate-y-1 border border-white/10 h-full"
+                  className={cardClassName}
                 >
                   <div className="relative h-48 overflow-hidden">
                     <img
