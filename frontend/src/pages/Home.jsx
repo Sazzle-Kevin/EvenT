@@ -76,7 +76,7 @@ export default function Home() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex justify-center items-center bg-black text-white">
+      <div className="min-h-screen flex justify-center items-center bg-[#64B5F6] text-white">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#8A9A76] mx-auto mb-4"></div>
           <p className="text-gray-400">Loading events...</p>
@@ -87,7 +87,7 @@ export default function Home() {
 
   if (error) {
     return (
-      <div className="min-h-screen flex justify-center items-center bg-black text-white">
+      <div className="min-h-screen flex justify-center items-center bg-[#64B5F6] text-white">
         <div className="text-center p-6 bg-red-900/30 border border-[#8A9A76]/30 rounded-lg">
           <p className="text-red-600 mb-4">{error}</p>
           <button
@@ -102,7 +102,7 @@ export default function Home() {
   }
 
   return (
-    <div className="relative w-full min-h-screen bg-black">
+    <div className="relative w-full min-h-screen bg-[#64B5F6]">
       {/* Background-Video: fixed am Viewport-Rand, z-0 */}
       {/* 16:9 Aspect-Ratio auf Mobile, 100vh auf Desktop */}
       {/* onEnded: pausiert beim letzten Frame (frozen) */}

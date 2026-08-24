@@ -14,11 +14,11 @@ export default function DynamicText() {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    // Text erst nach Verzögerung einblenden, Video hat Zeit zum Start
-    const showTimer = setTimeout(() => setVisible(true), 1500);
+    // Text schneller einblenden (0.3s), Video-Autoplay ist sofort
+    const showTimer = setTimeout(() => setVisible(true), 300);
 
     if (index >= adventureTranslations.length - 1) return; // letzter Eintrag → STOP
-    const timer = setTimeout(() => setIndex((prev) => prev + 1), 4000);
+    const timer = setTimeout(() => setIndex((prev) => prev + 1), 2500);
 
     return () => { clearTimeout(showTimer); clearTimeout(timer); };
   }, [index]);
@@ -26,7 +26,7 @@ export default function DynamicText() {
   return (
     <div className="flex min-h-[56px] items-center justify-center">
       <div
-        className={`text-center font-bold text-3xl sm:text-4xl md:text-5xl text-white drop-shadow-2xl transition-all duration-700 ${
+        className={`text-center font-bold text-3xl sm:text-4xl md:text-5xl text-white drop-shadow-2xl transition-all duration-500 ${
           visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
         }`}
       >
