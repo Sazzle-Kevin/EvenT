@@ -120,14 +120,14 @@ export default function Home() {
         <DynamicText />
       </div>
 
-      {/* True Bento-Grid: individuelle Höhen + asymmetrische Breiten */}
+      {/* Bento-Grid: CSS Columns für gleichmäßigen Whitespace + unterschiedliche Kartenhöhen */}
       <div className="relative z-10 max-w-7xl mx-auto px-4 pt-[56.25vw] sm:pt-[120vh] pb-32">
         {events.length === 0 ? (
           <div className="text-center py-12">
             <p className="text-white/70 text-lg">No events available yet.</p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="columns-1 sm:columns-2 lg:columns-4 gap-6">
             {events.map((event, index) => {
               const heightClass = CARD_HEIGHTS[index % CARD_HEIGHTS.length];
 
@@ -135,7 +135,7 @@ export default function Home() {
                 <Link
                   key={event.id}
                   to={`/events/${event.id}`}
-                  className={`group relative overflow-hidden rounded-3xl bg-white/5 backdrop-blur-xl border border-white/10 text-white no-underline shadow-xl hover:shadow-3xl transition-all duration-300 hover:-translate-y-2 ${heightClass}`}
+                  className={`mb-6 block group relative overflow-hidden rounded-3xl bg-white/5 backdrop-blur-xl border border-white/10 text-white no-underline shadow-xl hover:shadow-3xl transition-all duration-300 hover:-translate-y-2 ${heightClass} break-inside-avoid`}
                 >
                   <div className="absolute inset-0 flex flex-col">
                     <div className="relative h-48 flex-shrink-0 overflow-hidden">
