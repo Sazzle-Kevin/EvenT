@@ -1,5 +1,4 @@
 import { Route, Routes } from "react-router";
-import "./App.css";
 import Interface from "./components/Interface";
 import Event from "./components/Event";
 import SignIn from "./pages/SignIn";
