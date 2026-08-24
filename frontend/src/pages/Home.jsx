@@ -140,16 +140,20 @@ export default function Home() {
             <p className="text-white/70 text-lg">No events available yet.</p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 gap-6 auto-rows-[10rem] sm:auto-rows-[12rem]">
+          <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 gap-6 auto-rows-[20rem] sm:auto-rows-[24rem]">
             {events.map((event, index) => {
               const size = BENTO_SIZES[index % BENTO_SIZES.length];
-              const imgHeightClass = size.h === 2 ? "h-72" : "h-48";
+              // col-span-3 Karten: breiter Bild-Bereich
+              // row-span-2 Karten: doppelter Platz für größeres Bild
+              const imgHeightClass =
+                size.w === 3 ? "h-56" :
+                size.h === 2 ? "h-64" : "h-40";
 
               return (
                 <Link
                   key={event.id}
                   to={`/events/${event.id}`}
-                  className={`group relative overflow-hidden rounded-3xl bg-white/5 backdrop-blur-xl border border-white/10 text-white no-underline shadow-xl hover:shadow-3xl transition-all duration-300 hover:-translate-y-2 col-span-${size.w} row-span-${size.h}`}
+                  className={`group relative overflow-hidden rounded-3xl bg-white/5 backdrop-blur-xl border border-white/10 text-white no-underline shadow-xl hover:shadow-3xl transition-all duration-300 hover:-translate-y-2 col-span-${size.w} row-span-${size.h} h-[20rem] sm:h-[24rem]`}
                 >
                   <div className="flex flex-col h-full">
                     {/* Bild-Bereich — dynamisch hoch */}
