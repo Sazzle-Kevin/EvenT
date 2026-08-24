@@ -15,4 +15,9 @@ body {
     backdrop-filter: blur(12px) saturate(180%);
     -webkit-backdrop-filter: blur(12px) saturate(180%);
   }
+
+  /* Primäre Button-Variante: Sign-In/Up-Design — weißer Text, Bordeaux, hover dunkler */
+  .btn-primary {
+    @apply text-white bg-[#8A9A76] rounded-lg font-medium transition-colors shadow-md hover:shadow-lg hover:bg-[#636367];
+  }
 }

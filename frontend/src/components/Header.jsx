@@ -43,8 +43,8 @@ export default function Header() {
               className={({ isActive }) =>
                 `px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
                   isActive
-                    ? `${SILVER.active} ${SILVER.activeBg}`
-                    : `${SILVER.text} ${SILVER.hoverBg}`
+                    ? "text-white bg-white/15"
+                    : "text-white hover:bg-white/10"
                 }`
               }
             >
@@ -57,8 +57,8 @@ export default function Header() {
                 className={({ isActive }) =>
                   `px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
                     isActive
-                      ? `${SILVER.active} ${SILVER.activeBg}`
-                      : `${SILVER.text} ${SILVER.hoverBg}`
+                      ? "text-white bg-white/15"
+                      : "text-white hover:bg-white/10"
                   }`
                 }
               >
@@ -70,27 +70,26 @@ export default function Header() {
             <div className="flex items-center space-x-4">
               {isAuthenticated ? (
                 <>
-                  <span className={`text-sm ${SILVER.text}`}>
+                  <span className="text-sm text-white">
                     Hi, {user?.name || user?.email}
                   </span>
                   <button
                     onClick={handleSignOut}
-                    className={`px-4 py-2 rounded-lg text-sm font-medium ${SILVER.text} ${SILVER.hoverBg} transition-colors`}
+                    className="btn-primary px-4 py-2 text-sm"
                   >
                     Sign Out
                   </button>
                 </>
               ) : (
                 <>
-                  <Link
-                    to="/signin"
-                    className={`px-4 py-2 rounded-lg text-sm font-medium ${SILVER.text} ${SILVER.hoverBg} transition-colors`}
-                  >
-                    Sign In
-                  </Link>
+                  <div className="px-4 py-2 rounded-lg text-sm font-medium text-white hover:bg-white/10 transition-colors">
+                    <Link to="/signin">
+                      Sign In
+                    </Link>
+                  </div>
                   <Link
                     to="/signup"
-                    className={`px-4 py-2 rounded-lg text-sm font-medium text-white ${SILVER.primaryBtn} transition-colors shadow-md hover:shadow-lg`}
+                    className="btn-primary px-4 py-2 text-sm"
                   >
                     Sign Up
                   </Link>
@@ -133,7 +132,7 @@ export default function Header() {
             <div className="px-2 pt-2 pb-3 space-y-1">
               <Link
                 to="/"
-                className={`block px-3 py-2 rounded-lg text-base font-medium ${SILVER.text} ${SILVER.hoverBg}`}
+                className="block px-3 py-2 rounded-lg text-base font-medium text-white hover:bg-white/10 transition-colors"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 Home
@@ -142,7 +141,7 @@ export default function Header() {
               {isAuthenticated && (
                 <Link
                   to="/events/create"
-                  className={`block px-3 py-2 rounded-lg text-base font-medium ${SILVER.text} ${SILVER.hoverBg}`}
+                  className="block px-3 py-2 rounded-lg text-base font-medium text-white hover:bg-white/10 transition-colors"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   Create Event
@@ -152,7 +151,7 @@ export default function Header() {
               {isAuthenticated ? (
                 <button
                   onClick={handleSignOut}
-                  className={`w-full text-left px-3 py-2 rounded-lg text-base font-medium ${SILVER.text} ${SILVER.hoverBg}`}
+                  className="btn-primary w-full text-left px-3 py-2 text-base"
                 >
                   Sign Out
                 </button>
@@ -160,14 +159,14 @@ export default function Header() {
                 <>
                   <Link
                     to="/signin"
-                    className={`block px-3 py-2 rounded-lg text-base font-medium ${SILVER.text} ${SILVER.hoverBg}`}
+                    className="block px-3 py-2 rounded-lg text-base font-medium text-white hover:bg-white/10 transition-colors"
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
                     Sign In
                   </Link>
                   <Link
                     to="/signup"
-                    className={`block px-3 py-2 rounded-lg text-base font-medium ${SILVER.text} ${SILVER.hoverBg}`}
+                    className="btn-primary w-full text-left px-3 py-2 text-base"
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
                     Sign Up
