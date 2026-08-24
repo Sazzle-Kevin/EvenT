@@ -3,14 +3,24 @@ import { Link } from "react-router";
 import { apiClient } from "../utils/apiClient";
 import DynamicText from "../components/DynamicText";
 
-const getRandomImage = (event) => {
-  // picsum.photos/seed/{id}: JEDE ID → anderes, unabhängiges Bild
-  return `https://picsum.photos/seed/event-${event.id}/400/300`;
-};
+const getRandomImage = (event) =>
+  `https://picsum.photos/seed/event-${event.id}/400/300`;
 
-// Bento-Grid-Konfiguration: Bestimmt die Breite der Karten
-// Pattern: [2, 1, 1, 1, 1, 2] → 1 breite + 2 klein + 2 klein + 1 breite (Desktop 3-Spalten)
-const BENTO_PATTERN = [2, 1, 1, 2, 1, 1];
+// Bento-Seeds: bestimme die relative Größe der Karten
+// Format: { width: 'col-span-X', height: 'row-span-Y' }
+// width: 1 (schmal) | 2 (1.5x breit) | 3 (doppelt breit)
+// height: 1 (normal) | 2 (doppelt hoch)
+const BENTO_SIZES = [
+  { w: 2, h: 1 }, // breit, normal
+  { w: 1, h: 2 }, // schmal, hoch
+  { w: 1, h: 1 }, // schmal, normal
+  { w: 3, h: 1 }, // doppelt breit, normal
+  { w: 1, h: 1 }, // schmal, normal
+  { w: 2, h: 2 }, // breit, hoch
+  { w: 1, h: 1 }, // schmal, normal
+  { w: 2, h: 1 }, // breit, normal
+  { w: 1, h: 2 }, // schmal, hoch
+];
 
 export default function Home() {
   const [events, setEvents] = useState([]);
@@ -50,14 +60,17 @@ export default function Home() {
           }
         }
         const sortedEvents = [...eventsData].sort(
-          (a, b) => new Date(a.date || a.createdAt) - new Date(b.date || b.createdAt)
+          (a, b) =>
+            new Date(a.date || a.createdAt) - new Date(b.date || b.createdAt)
         );
         setEvents(sortedEvents);
       } catch (err) {
         if (err.response?.status === 404) {
           setError("No events found.");
         } else if (err.message === "Network Error") {
-          setError("Unable to connect to the server. Please make sure the API is running.");
+          setError(
+            "Unable to connect to the server. Please make sure the API is running."
+          );
         } else {
           setError("Failed to load events. Please try again later.");
         }
@@ -98,7 +111,7 @@ export default function Home() {
 
   return (
     <div className="relative w-full min-h-screen bg-[#64B5F6]">
-      {/* Background-Video: fixed am Viewport-Rand, z-0 */}
+      {/* Background-Video: fixed am Viewport-Rand */}
       <video
         ref={videoRef}
         autoPlay
@@ -120,28 +133,26 @@ export default function Home() {
         <DynamicText />
       </div>
 
-      {/* Bento-Grid: Content Layer unterhalb des Hero-Videos */}
+      {/* Bento-Grid: Content Layer unterhalb */}
       <div className="relative z-10 max-w-7xl mx-auto px-4 pt-[56.25vw] sm:pt-[120vh] pb-32">
         {events.length === 0 ? (
           <div className="text-center py-12">
             <p className="text-white/70 text-lg">No events available yet.</p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 lg:gap-12 auto-rows-[20rem] sm:auto-rows-[22rem]">
+          <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 gap-6 auto-rows-[10rem] sm:auto-rows-[12rem]">
             {events.map((event, index) => {
-              // Bento-Muster: abwechselnd breit/schmal
-              const colSpan = BENTO_PATTERN[index % BENTO_PATTERN.length] === 2 ? "sm:col-span-2 lg:col-span-2" : "";
+              const size = BENTO_SIZES[index % BENTO_SIZES.length];
 
               return (
                 <Link
                   key={event.id}
                   to={`/events/${event.id}`}
-                  className={`group relative overflow-hidden rounded-2xl bg-white/5 backdrop-blur-xl border border-white/10 text-white no-underline shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 ${colSpan} row-span-1`}
+                  className={`group relative overflow-hidden rounded-2xl bg-white/5 backdrop-blur-xl border border-white/10 text-white no-underline shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 col-span-${size.w} row-span-${size.h}`}
                 >
-                  {/* Karten-Inhalt */}
                   <div className="flex flex-col h-full">
                     {/* Bild-Bereich */}
-                    <div className="relative h-48 sm:h-56 overflow-hidden flex-shrink-0">
+                    <div className="relative h-48 overflow-hidden flex-shrink-0">
                       <img
                         src={getRandomImage(event)}
                         alt={event.title}
@@ -151,7 +162,6 @@ export default function Home() {
                           e.target.src = `https://picsum.photos/seed/fallback-${event.id}/400/300`;
                         }}
                       />
-                      {/* Category-Badge */}
                       <span className="absolute top-3 left-3 rounded-full bg-[#DDC49A]/90 px-2.5 py-1 font-medium text-xs text-[#636367]">
                         {event.category || "Event"}
                       </span>
