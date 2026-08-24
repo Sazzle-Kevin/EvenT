@@ -58,7 +58,7 @@ export default function Header() {
                 value={searchQuery}
                 onChange={handleSearchChange}
                 placeholder="Suche Events..."
-                className="w-full pl-10 pr-4 py-1.5 text-sm text-white bg-white/5 rounded-full placeholder-white/40 focus:outline-none focus:ring-1 focus:ring-[#8A9A76] transition-colors"
+                className="w-full pl-10 pr-4 py-1.5 text-sm text-white bg-white/5 rounded-full placeholder-white/40 focus:outline-none transition-colors"
                 aria-label="Suche nach Events"
               />
               <svg
@@ -252,7 +252,7 @@ export default function Header() {
                   value={searchQuery}
                   onChange={handleSearchChange}
                   placeholder="Suche Events..."
-                  className="w-full pl-10 pr-4 py-2 text-sm text-white bg-white/5 rounded-full placeholder-white/40 focus:outline-none focus:ring-1 focus:ring-[#8A9A76]"
+                  className="w-full pl-10 pr-4 py-2 text-sm text-white bg-white/5 rounded-full placeholder-white/40 focus:outline-none"
                   aria-label="Suche nach Events"
                   autoFocus
                 />

@@ -136,13 +136,13 @@ export default function Home() {
             <p className="text-white/70 text-lg">No events available yet.</p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-12">
+          <div className="grid grid-cols-1 sm:grid-cols-2 sm:grid-rows-2 md:grid-cols-3 md:grid-rows-1 gap-y-8 sm:gap-6 md:gap-12">
             {events.map((event) => {
               return (
                 <Link
                   key={event.id}
                   to={`/events/${event.id}`}
-                  className="group block bg-white/10 backdrop-blur-xl rounded-xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden transform hover:-translate-y-1 border border-white/10"
+                  className="group block bg-white/10 backdrop-blur-xl rounded-xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden transform hover:-translate-y-1 border border-white/10 h-full"
                 >
                   <div className="relative h-48 overflow-hidden">
                     <img
