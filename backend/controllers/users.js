@@ -4,6 +4,8 @@ import { User } from "../db.js";
 import { asyncWrapper } from "../utils/asyncWrapper.js";
 import { ErrorResponse } from "../utils/ErrorResponse.js";
 
+const JWT_SECRET = process.env.JWT_SECRET;
+
 export const register = asyncWrapper(async (req, res, next) => {
   const {
     body: { email, password },
@@ -35,8 +37,8 @@ export const login = asyncWrapper(async (req, res, next) => {
 
   const payload = { id: user.id, email: user.email };
 
-  const token = jwt.sign(payload, process.env.JWT_SECRET ?? "secret", {
-    expiresIn: 3600000,
+  const token = jwt.sign(payload, JWT_SECRET, {
+    expiresIn: "1h",
   });
 
   res.json({ user: payload, token });

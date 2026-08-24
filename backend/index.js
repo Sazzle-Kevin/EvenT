@@ -3,6 +3,14 @@ import morgan from 'morgan';
 import cors from 'cors';
 import './db.js';
 
+const requiredEnv = ['JWT_SECRET'];
+for (const key of requiredEnv) {
+  if (!process.env[key]) {
+    console.error(`\x1b[31m%s\x1b[0m`, `FATAL: ${key} environment variable is required`);
+    process.exit(1);
+  }
+}
+
 import router from './routes/index.js';
 import { setupSwagger } from './swagger.js';
 import { errorHandler } from './middlewares/errorHandler.js';

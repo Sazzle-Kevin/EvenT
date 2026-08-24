@@ -4,9 +4,9 @@ import Footer from "./Footer";
 
 export default function Interface() {
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="relative min-h-screen">
       <Header />
-      <main className="flex-grow">
+      <main className="pt-16">
         <Outlet />
       </main>
       <Footer />

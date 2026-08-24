@@ -1,23 +1,18 @@
 @import "tailwindcss";
 
-/* Transparente Hintergründe für Liquid Glass Effekt */
+/* Dunkler Grund für alle Seiten */
 html,
 body {
-  background: transparent;
   margin: 0;
+  padding: 0;
+  background: #000;
 }
 
-/* Custom Properties für Farben */
-:root {
-  --color-satin-grey: #636367;
-  --color-beige: #DDC49A;
-  --color-olive: #8A9A76;
-
-  /* Textfarben */
-  --color-text-primary: #2d2d2d;
-  --color-text-secondary: #6b7280;
-
-  /* Hover-Transparenzen */
-  --hover-beige: rgba(221, 196, 154, 0.2);
-  --hover-olive: rgba(138, 154, 118, 0.1);
+@layer components {
+  /* Liquid Glass Container: 5% weiß + starker backdrop-blur für Video-Durchscheinung */
+  .liquid-glass {
+    @apply bg-white/5;
+    backdrop-filter: blur(12px) saturate(180%);
+    -webkit-backdrop-filter: blur(12px) saturate(180%);
+  }
 }

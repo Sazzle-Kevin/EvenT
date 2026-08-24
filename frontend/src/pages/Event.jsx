@@ -71,7 +71,7 @@ export default function Event() {
     return (
       <div className="min-h-screen flex justify-center items-center bg-gradient-to-br from-slate-50 to-blue-50">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#8A9A76] mx-auto mb-4"></div>
           <p className="text-gray-600">Loading event details...</p>
         </div>
       </div>
@@ -86,7 +86,7 @@ export default function Event() {
           <p className="text-red-600 mb-6">{error || "Event not found"}</p>
           <Link
             to="/"
-            className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+            className="px-6 py-2 bg-[#8A9A76] text-white rounded-lg hover:bg-[#636367] transition-colors"
           >
             Back to Events
           </Link>
@@ -101,7 +101,7 @@ export default function Event() {
         {/* Back Button */}
         <Link
           to="/"
-          className="inline-flex items-center text-blue-600 hover:text-blue-500 mb-6 transition-colors"
+          className="inline-flex items-center text-[#8A9A76] hover:text-[#636367] mb-6 transition-colors"
         >
           ← Back to Events
         </Link>
@@ -136,7 +136,7 @@ export default function Event() {
               {event.date && (
                 <div className="flex items-start space-x-4">
                   <div className="bg-blue-100 p-3 rounded-lg">
-                    <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-6 h-6 text-[#8A9A76]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} 
                         d="M8 7V3m8 4V3m-9 8h10a2 2 0 012 2v1m-2 6a2 2 0 01-2 2H9a2 2 0 01-2-2v-1a2 2 0 012-2h6a2 2 0 012 2z" />
                     </svg>
@@ -151,7 +151,7 @@ export default function Event() {
               {event.location && (
                 <div className="flex items-start space-x-4">
                   <div className="bg-blue-100 p-3 rounded-lg">
-                    <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-6 h-6 text-[#8A9A76]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} 
                         d="M17.982 18.72S15.85 20 12 20s-3.982-1.28-5.982-4.28A7.969 7.969 0 015 10c0-4.418 3.582-8 8-8s8 3.582 8 8c0 1.32-.38 2.56-1.018 3.72z" />
                     </svg>
@@ -166,9 +166,11 @@ export default function Event() {
               {event.category && (
                 <div className="flex items-start space-x-4">
                   <div className="bg-blue-100 p-3 rounded-lg">
-                    <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} 
-                        d="M7 7h.01M7 7h.01M7 7h.01zM7 7h.01zM12 12h.01M12 12h.01M12 12h.01M12 12h.01M17 17h.01M17 17h.01M17 17h.01M17 17h.01" />
+                    <svg className="w-6 h-6 text-[#8A9A76]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+                        d="M9.563 2.563A.75.75 0 0 1 10 3.25v5a.75.75 0 0 1-.75.75h-5a.75.75 0 0 1-.663-1.063l4.23-4.23.01-.01a.75.75 0 0 1 .977-.384Z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+                        d="M16.83 2.17a2 2 0 0 1 2.83 0l3.17 3.17a2 2 0 0 1 0 2.83l-8.5 8.5a2 2 0 0 1-1.414.577l-3.17.53a.75.75 0 0 1-.887-.886l.53-3.17a2 2 0 0 1 .577-1.414l8.5-8.5Z" />
                     </svg>
                   </div>
                   <div>
@@ -193,7 +195,7 @@ export default function Event() {
         <div className="flex gap-4 justify-center">
           <Link
             to="/"
-            className="px-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg hover:from-blue-700 hover:to-indigo-700 transition-all shadow-md hover:shadow-lg"
+            className="px-6 py-3 bg-gradient-to-r from-[#8A9A76] to-[#636367] text-white rounded-lg hover:from-[#636367] hover:to-[#636367] transition-all shadow-md hover:shadow-lg"
           >
             ← Back to All Events
           </Link>

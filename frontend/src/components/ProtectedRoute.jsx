@@ -1,19 +1,18 @@
 import { Navigate, Outlet } from "react-router";
 import { useAuth } from "../contexts/AuthContext";
 
+function LoadingFallback() {
+  return (
+    <div className="flex justify-center items-center min-h-[200px]">
+      <div className="animate-spin rounded-full h-10 w-10 border-2 border-[#8A9A76] border-t-transparent"></div>
+    </div>
+  );
+}
+
 export default function ProtectedRoute() {
   const { isAuthenticated, loading } = useAuth();
 
-  // Show nothing while checking auth status
-  if (loading) {
-    return (
-      <div className="flex justify-center items-center min-h-[200px]">
-        <span className="loading-spinner">Loading...</span>
-      </div>
-    );
-  }
-
-  // If not authenticated, redirect to sign-in
+  if (loading) return <LoadingFallback />;
   return isAuthenticated ? <Outlet /> : <Navigate to="/signin" replace />;
 }
 
@@ -21,13 +20,6 @@ export default function ProtectedRoute() {
 export function PublicRoute() {
   const { isAuthenticated, loading } = useAuth();
 
-  if (loading) {
-    return (
-      <div className="flex justify-center items-center min-h-[200px]">
-        <span className="loading-spinner">Loading...</span>
-      </div>
-    );
-  }
-
+  if (loading) return <LoadingFallback />;
   return !isAuthenticated ? <Outlet /> : <Navigate to="/" replace />;
 }

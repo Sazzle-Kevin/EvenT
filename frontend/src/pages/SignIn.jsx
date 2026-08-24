@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router";
+import { Link } from "react-router";
 import { useState } from "react";
 import { useAuth } from "../contexts/AuthContext";
 
@@ -7,7 +7,6 @@ export default function SignIn() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const navigate = useNavigate();
   const { signIn } = useAuth();
 
   const handleSubmit = async (e) => {
@@ -42,7 +41,7 @@ export default function SignIn() {
             Or{" "}
             <Link
               to="/signup"
-              className="font-medium text-blue-600 hover:text-blue-500"
+              className="font-medium text-[#8A9A76] hover:text-[#636367]"
             >
               create a new account
             </Link>
@@ -67,7 +66,7 @@ export default function SignIn() {
                 type="email"
                 autoComplete="email"
                 required
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
+                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-[#8A9A76] focus:border-[#8A9A76] focus:z-10 sm:text-sm"
                 placeholder="Email address"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -83,7 +82,7 @@ export default function SignIn() {
                 type="password"
                 autoComplete="current-password"
                 required
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
+                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-[#8A9A76] focus:border-[#8A9A76] focus:z-10 sm:text-sm"
                 placeholder="Password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -95,7 +94,7 @@ export default function SignIn() {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="group mt-2 w-full flex justify-center py-2 px-4 border border-transparent font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50"
+              className="group mt-2 w-full flex justify-center py-2 px-4 border border-transparent font-medium rounded-md text-white bg-[#8A9A76] hover:bg-[#636367] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#8A9A76] disabled:opacity-50"
             >
               {isSubmitting ? "Signing in..." : "Sign in"}
             </button>

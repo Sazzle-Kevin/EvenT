@@ -50,7 +50,7 @@ export default function CreateEvent() {
         <div className="mb-6">
           <Link
             to="/"
-            className="text-blue-600 hover:text-blue-500 inline-block"
+            className="text-[#8A9A76] hover:text-[#636367] inline-block"
           >
             ← Back to Events
           </Link>
@@ -81,7 +81,7 @@ export default function CreateEvent() {
                 required
                 minLength={3}
                 maxLength={255}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-[#8A9A76] focus:border-[#8A9A76]"
                 placeholder="Enter event title"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
@@ -99,7 +99,7 @@ export default function CreateEvent() {
                 id="description"
                 rows="4"
                 maxLength={5000}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-[#8A9A76] focus:border-[#8A9A76]"
                 placeholder="Describe your event..."
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
@@ -117,7 +117,7 @@ export default function CreateEvent() {
                 type="datetime-local"
                 id="date"
                 required
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-[#8A9A76] focus:border-[#8A9A76]"
                 value={date}
                 onChange={(e) => setDate(e.target.value)}
               />
@@ -135,7 +135,7 @@ export default function CreateEvent() {
                 id="location"
                 required
                 maxLength={255}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-[#8A9A76] focus:border-[#8A9A76]"
                 placeholder="Enter event location"
                 value={location}
                 onChange={(e) => setLocation(e.target.value)}
@@ -145,7 +145,7 @@ export default function CreateEvent() {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="w-full flex justify-center py-2 px-4 border border-transparent font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50"
+              className="w-full flex justify-center py-2 px-4 border border-transparent font-medium rounded-md text-white bg-[#8A9A76] hover:bg-[#636367] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#8A9A76] disabled:opacity-50"
             >
               {isSubmitting ? "Creating..." : "Create Event"}
             </button>

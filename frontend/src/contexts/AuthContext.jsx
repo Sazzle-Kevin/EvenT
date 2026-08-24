@@ -1,9 +1,12 @@
+/* eslint-disable react-hooks/set-state-in-effect -- initial auth load legitimately syncs state from localStorage */
 import { createContext, useContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router";
 import { apiClient } from "../utils/apiClient";
+import { isTokenValid } from "../utils/jwt";
 
 const AuthContext = createContext();
 
+// eslint-disable-next-line react-refresh/only-export-components -- hook export
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) {
@@ -14,44 +17,40 @@ export const useAuth = () => {
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  const [token, setToken] = useState(() => {
-    return localStorage.getItem("token") || null;
-  });
+  const [token, setToken] = useState(() => localStorage.getItem("token") || null);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
-  // Check if token exists in localStorage on load
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
-    if (storedToken) {
-      setToken(storedToken);
-      // Verify token and fetch user data
-      apiClient
-        .get("/api/auth/profile", {
-          headers: { Authorization: `Bearer ${storedToken}` },
-        })
-        .then((response) => {
-          setUser(response.data);
-          setLoading(false);
-        })
-        .catch(() => {
-          // Token is invalid, clear it
-          localStorage.removeItem("token");
-          setToken(null);
-          setUser(null);
-          setLoading(false);
-        });
-    } else {
+    if (!storedToken) {
       setLoading(false);
+      return;
     }
+
+    if (!isTokenValid(storedToken)) {
+      localStorage.removeItem("token");
+      setLoading(false);
+      return;
+    }
+
+    setToken(storedToken);
+    apiClient
+      .get("/api/auth/profile")
+      .then((response) => {
+        setUser(response.data);
+        setLoading(false);
+      })
+      .catch(() => {
+        localStorage.removeItem("token");
+        setToken(null);
+        setUser(null);
+        setLoading(false);
+      });
   }, []);
 
   const signIn = async (email, password) => {
-    const response = await apiClient.post("/api/auth/login", {
-      email,
-      password,
-    });
-
+    const response = await apiClient.post("/api/auth/login", { email, password });
     const { token: authToken, user: userData } = response.data;
     localStorage.setItem("token", authToken);
     setToken(authToken);
@@ -61,21 +60,12 @@ export const AuthProvider = ({ children }) => {
   };
 
   const signUp = async (name, email, password) => {
-    // Only include name if it's non-empty (name is optional in backend)
     const payload = { email, password };
-    if (name && name.trim()) {
-      payload.name = name.trim();
-    }
+    if (name && name.trim()) payload.name = name.trim();
 
-    // Register user
     await apiClient.post("/api/users", payload);
 
-    // Sign in to get token (users API doesn't return token on registration)
-    const loginResponse = await apiClient.post("/api/auth/login", {
-      email,
-      password,
-    });
-
+    const loginResponse = await apiClient.post("/api/auth/login", { email, password });
     const { token: authToken, user: userData } = loginResponse.data;
     localStorage.setItem("token", authToken);
     setToken(authToken);
@@ -91,7 +81,7 @@ export const AuthProvider = ({ children }) => {
     navigate("/signin");
   };
 
-  const isAuthenticated = !!token;
+  const isAuthenticated = !!token && isTokenValid(token);
 
   const value = {
     user,
