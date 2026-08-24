@@ -24,7 +24,7 @@ export default function Header() {
   return (
     <header className="absolute top-0 left-0 w-full z-20">
       {/* Liquid-Glass Container: halbtransparent — Video schimmert durch */}
-      <div className="relative z-10 mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 border-b border-[#636367]/20 liquid-glass">
+      <div className="relative z-10 mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 border-b border-white/20 liquid-glass">
         <div className="flex justify-between h-16 items-center">
           {/* Logo — Silber */}
           <div className="flex-shrink-0">
@@ -82,11 +82,12 @@ export default function Header() {
                 </>
               ) : (
                 <>
-                  <div className="px-4 py-2 rounded-lg text-sm font-medium text-white hover:bg-white/10 transition-colors">
-                    <Link to="/signin">
-                      Sign In
-                    </Link>
-                  </div>
+                  <Link
+                    to="/signin"
+                    className="btn-primary px-4 py-2 text-sm"
+                  >
+                    Sign In
+                  </Link>
                   <Link
                     to="/signup"
                     className="btn-primary px-4 py-2 text-sm"
@@ -159,7 +160,7 @@ export default function Header() {
                 <>
                   <Link
                     to="/signin"
-                    className="block px-3 py-2 rounded-lg text-base font-medium text-white hover:bg-white/10 transition-colors"
+                    className="btn-primary w-full text-left px-3 py-2 text-base"
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
                     Sign In
