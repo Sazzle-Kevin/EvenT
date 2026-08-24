@@ -6,7 +6,8 @@ const adventureTranslations = [
   "Περιπέτεια",   // 2. Greek (Ελληνικά) — andere Schrift
   "Приключение",  // 3. Русский (Cyrillic) — andere Schrift
   "모험",          // 4. 한국어 (Hangul) — asiatisch
-  "Abenteuer",    // 5. Deutsch (Ende → STOP)
+  "冒险",          // 5. 中文 (Simplified Chinese) — asiatisch
+  "Abenteuer",    // 6. Deutsch (Ende → STOP)
 ];
 
 export default function DynamicText() {
