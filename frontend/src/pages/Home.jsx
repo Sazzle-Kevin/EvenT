@@ -8,22 +8,23 @@ const getRandomImage = (event) => {
   return `https://picsum.photos/seed/event-${event.id}/400/300`;
 };
 
+// Bento-Grid-Konfiguration: Bestimmt die Breite der Karten
+// Pattern: [2, 1, 1, 1, 1, 2] → 1 breite + 2 klein + 2 klein + 1 breite (Desktop 3-Spalten)
+const BENTO_PATTERN = [2, 1, 1, 2, 1, 1];
+
 export default function Home() {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const videoRef = useRef(null);
 
-  // Robustes autoplay: Safari blockiert autoplay auf localhost,
-  // also versuchen wir .play() nach dem Mount
+  // Robustes autoplay
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
 
     const attemptPlay = () => {
-      video.play().catch(() => {
-        // Autoplay blockiert — Browser erlaubt es nach User-Interaktion
-      });
+      video.play().catch(() => {});
     };
 
     attemptPlay();
@@ -98,8 +99,6 @@ export default function Home() {
   return (
     <div className="relative w-full min-h-screen bg-[#64B5F6]">
       {/* Background-Video: fixed am Viewport-Rand, z-0 */}
-      {/* 16:9 Aspect-Ratio auf Mobile, 100vh auf Desktop */}
-      {/* onEnded: pausiert beim letzten Frame (frozen) */}
       <video
         ref={videoRef}
         autoPlay
@@ -116,57 +115,62 @@ export default function Home() {
         <source src="/videos/hero-location-bg.mp4" type="video/mp4" />
       </video>
 
-      {/* Hero-Headline: zentriert im Hero-Bereich */}
+      {/* Hero-Headline */}
       <div className="absolute inset-x-0 top-16 z-30 flex items-center justify-center sm:h-[calc(100vh-4rem)]">
         <DynamicText />
       </div>
 
-      {/* Content Layer: Event-Karten unterhalb des Hero-Videos */}
-      {/* Bento-Grid: 2 Rows auf Mobile, 1 Row auf Desktop */}
+      {/* Bento-Grid: Content Layer unterhalb des Hero-Videos */}
       <div className="relative z-10 max-w-7xl mx-auto px-4 pt-[56.25vw] sm:pt-[120vh] pb-32">
         {events.length === 0 ? (
           <div className="text-center py-12">
             <p className="text-white/70 text-lg">No events available yet.</p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 sm:grid-rows-2 md:grid-cols-3 md:grid-rows-1 gap-y-8 sm:gap-6 md:gap-12">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 lg:gap-12 auto-rows-[20rem] sm:auto-rows-[22rem]">
             {events.map((event, index) => {
-              // Bento-Grid: Erste Karte (featured) ist auf Mobile über beide Spalten breit
-              const isFeatured = index === 0;
-              const cardClassName = `group block bg-white/10 backdrop-blur-xl rounded-xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden transform hover:-translate-y-1 border border-white/10 ${
-                isFeatured ? "sm:col-span-2" : ""
-              } h-full`;
+              // Bento-Muster: abwechselnd breit/schmal
+              const colSpan = BENTO_PATTERN[index % BENTO_PATTERN.length] === 2 ? "sm:col-span-2 lg:col-span-2" : "";
 
               return (
                 <Link
                   key={event.id}
                   to={`/events/${event.id}`}
-                  className={cardClassName}
+                  className={`group relative overflow-hidden rounded-2xl bg-white/5 backdrop-blur-xl border border-white/10 text-white no-underline shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 ${colSpan} row-span-1`}
                 >
-                  <div className="relative h-48 overflow-hidden">
-                    <img
-                      src={getRandomImage(event)}
-                      alt={event.title}
-                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                      loading="lazy"
-                      onError={(e) => {
-                        e.target.src = `https://picsum.photos/seed/fallback-${event.id}/400/300`;
-                      }}
-                    />
-                    <span className="absolute top-2 left-2 rounded-md bg-[#DDC49A]/90 px-2 py-1 font-medium text-xs text-[#636367]">
-                      {event.category || "Event"}
-                    </span>
-                  </div>
-                  <div className="p-4">
-                    <h3 className="font-bold text-lg text-white mb-2 line-clamp-1 group-hover:text-[#8A9A76] transition-colors">
-                      {event.title}
-                    </h3>
-                    <p className="text-white/70 text-sm line-clamp-2 mb-3">
-                      {event.description || "No description available"}
-                    </p>
-                    {event.location && (
-                      <p className="text-[#8A9A76] text-xs flex items-center">📍 {event.location}</p>
-                    )}
+                  {/* Karten-Inhalt */}
+                  <div className="flex flex-col h-full">
+                    {/* Bild-Bereich */}
+                    <div className="relative h-48 sm:h-56 overflow-hidden flex-shrink-0">
+                      <img
+                        src={getRandomImage(event)}
+                        alt={event.title}
+                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                        loading="lazy"
+                        onError={(e) => {
+                          e.target.src = `https://picsum.photos/seed/fallback-${event.id}/400/300`;
+                        }}
+                      />
+                      {/* Category-Badge */}
+                      <span className="absolute top-3 left-3 rounded-full bg-[#DDC49A]/90 px-2.5 py-1 font-medium text-xs text-[#636367]">
+                        {event.category || "Event"}
+                      </span>
+                    </div>
+
+                    {/* Text-Bereich */}
+                    <div className="p-4 flex-1 flex flex-col">
+                      <h3 className="font-bold text-lg text-white mb-2 line-clamp-1 group-hover:text-[#8A9A76] transition-colors">
+                        {event.title}
+                      </h3>
+                      <p className="text-white/70 text-sm line-clamp-2 mb-3 flex-1">
+                        {event.description || "No description available"}
+                      </p>
+                      {event.location && (
+                        <p className="text-[#8A9A76] text-xs flex items-center mt-auto">
+                          📍 {event.location}
+                        </p>
+                      )}
+                    </div>
                   </div>
                 </Link>
               );
