@@ -141,7 +141,7 @@ export default function Home() {
         autoPlay
         muted
         playsInline
-        preload="auto"
+        preload="metadata"
         className="fixed inset-0 w-full aspect-video sm:h-screen object-cover object-top z-0"
         onEnded={(e) => {
           const v = e.target;
@@ -149,6 +149,7 @@ export default function Home() {
           v.currentTime = v.duration - 0.1;
         }}
       >
+        <source src="/videos/hero-location-bg.webm" type="video/webm; codecs=vp9" />
         <source src="/videos/hero-location-bg.mp4" type="video/mp4" />
       </video>
 
