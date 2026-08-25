@@ -1,18 +1,35 @@
 import { useEffect, useState } from "react";
+import { getEvents } from "../services/api";
+import EventCard from "../components/EventCard";
 
 export default function Home() {
   const [events, setEvents] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
   useEffect(() => {
-    fetch("http://localhost:3001/api/events")
-      .then((response) => response.json())
+    getEvents()
       .then((data) => {
-        setEvents(data.results);
-      });
+        const sorted = data.results.sort(
+          (a, b) => new Date(a.date) - new Date(b.date),
+        );
+
+        setEvents(sorted);
+      })
+      .catch((error) => setError(error.message))
+      .finally(() => setLoading(false));
   }, []);
 
-  {
-    events.map((event) => {
-      <p key={event.key}>{event.title}</p>;
-    });
-  }
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>{error}</p>;
+
+  return (
+    <main>
+      <h1>Events</h1>
+
+      {events.map((event) => (
+        <EventCard key={event.id} event={event} />
+      ))}
+    </main>
+  );
 }
