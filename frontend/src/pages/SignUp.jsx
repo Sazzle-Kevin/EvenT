@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
-import { signIn } from "../services/api";
+import { signUp } from "../services/api";
 
-export default function SignIn() {
+export default function SignUp() {
   const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
@@ -17,14 +17,9 @@ export default function SignIn() {
     setLoading(true);
 
     try {
-      const data = await signIn({
-        email,
-        password,
-      });
+      await signUp({ email, password });
 
-      localStorage.setItem("apiToken", data.token);
-
-      navigate("/");
+      navigate("/signin");
     } catch (error) {
       setError(error.message);
     } finally {
@@ -48,9 +43,7 @@ export default function SignIn() {
         onChange={(event) => setPassword(event.target.value)}
       />
 
-      <button disabled={loading}>
-        {loading ? "Signing in..." : "Sign In"}
-      </button>
+      <button disabled={loading}>{loading ? "Creating..." : "Sign Up"}</button>
 
       {error && <p>{error}</p>}
     </form>
