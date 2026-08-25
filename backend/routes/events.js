@@ -1,10 +1,13 @@
 import express from "express";
-import { findUpcomingEvents } from "../controllers/events.js";
+import { findUpcomingEvents, searchEvents } from "../controllers/events.js";
 
 const router = express.Router();
 
-// Only /upcoming is event-specific; all other /events routes (/, /:id, POST, PUT, DELETE)
-// fall through to the generic /:model dynamicModel route in index.js.
+// Event-spezifische Routen MÜSSEN vor dem generischen /:model-Router kommen
 router.get("/upcoming", findUpcomingEvents);
+router.get("/search", searchEvents);
+
+// Alle anderen /events-Routen (/, /:id, POST, PUT, DELETE)
+// fallen durch den generellen /:model dynamicModel-Router in index.js.
 
 export default router;

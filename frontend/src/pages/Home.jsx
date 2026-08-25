@@ -16,6 +16,7 @@ export default function Home() {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [searchLoading, setSearchLoading] = useState(false);
   const videoRef = useRef(null);
 
   useEffect(() => {
@@ -69,6 +70,41 @@ export default function Home() {
       }
     };
     fetchEvents();
+
+    // Listen for search-event from Header
+    let searchTimeout;
+    const handleSearch = (e) => {
+      const query = e.detail.query;
+      if (searchTimeout) clearTimeout(searchTimeout);
+
+      searchTimeout = setTimeout(() => {
+        if (query && query.trim().length >= 2) {
+          setSearchLoading(true);
+          apiClient
+            .get("/api/events/search", { params: { q: query.trim() } })
+            .then((res) => {
+              setEvents(res.data);
+            })
+            .catch(() => {
+              // Search failed — keep showing existing events
+            })
+            .finally(() => setSearchLoading(false));
+        } else if (!query || query.trim().length === 0) {
+          // Clear search → re-fetch all events with loading state
+          setLoading(true);
+          setEvents([]);
+          setSearchLoading(false);
+          fetchEvents();
+        }
+      }, 500);
+    };
+
+    window.addEventListener("search-event", handleSearch);
+
+    return () => {
+      if (searchTimeout) clearTimeout(searchTimeout);
+      window.removeEventListener("search-event", handleSearch);
+    };
   }, []);
 
   if (loading) {
@@ -120,11 +156,21 @@ export default function Home() {
         <DynamicText />
       </div>
 
+      {/* Spacer: damit Karten unterhalb des Hero-Video-Bereichs erscheinen */}
+      <div className="h-screen sm:h-[120vh] w-full" />
+
       {/* Bento-Grid: CSS Columns für gleichmäßigen Whitespace + unterschiedliche Kartenhöhen */}
-      <div className="relative z-10 max-w-7xl mx-auto px-4 pt-[56.25vw] sm:pt-[120vh] pb-32">
+      <section className="relative z-10 max-w-7xl mx-auto px-4 py-8 pb-32">
+        {searchLoading && (
+          <div className="text-center py-8 text-white/70">
+            <p>Searching events...</p>
+          </div>
+        )}
         {events.length === 0 ? (
           <div className="text-center py-12">
-            <p className="text-white/70 text-lg">No events available yet.</p>
+            <p className="text-white/70 text-lg">
+              {searchLoading ? "Searching..." : "No events available yet."}
+            </p>
           </div>
         ) : (
           <div className="columns-1 sm:columns-2 lg:columns-4 gap-6">
@@ -172,7 +218,7 @@ export default function Home() {
             })}
           </div>
         )}
-      </div>
+      </section>
     </div>
   );
 }
