@@ -2,9 +2,12 @@ import { Link } from "react-router";
 
 export default function Header() {
   return (
-    <header className="w-full bg-gray-900 px-6 py-4">
+    <header className="w-full bg-surface px-6 py-4">
       <nav className="mx-auto flex max-w-6xl items-center justify-between">
-        <Link to="/" className="text-2xl font-bold curser-pointer">
+        <Link
+          to="/"
+          className="text-4xl font-bold text-blue-700 curser-pointer"
+        >
           EvenT
         </Link>
 

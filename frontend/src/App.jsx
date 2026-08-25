@@ -9,7 +9,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
   return (
-    <div className="min-h-screen w-full bg-gray-800 text-white">
+    <div className="min-h-screen w-full bg-background text-text">
       <Routes>
         <Route path="/" element={<Interface />}>
           <Route index element={<Home />} />

@@ -8,7 +8,7 @@ export default function EventCard({ event }) {
       onClick={() => navigate(`/events/${event.id}`)}
       className="mx-4 my-8"
     >
-      <h2 className="my-2 text-center">{event.title}</h2>
+      <h2 className="my-2 text-center text-yellow-100">{event.title}</h2>
 
       <p>{new Date(event.date).toLocaleString()}</p>
 
