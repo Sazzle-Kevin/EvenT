@@ -10,3 +10,34 @@
   --color-danger: #ef4444;
   --color-success: #22c55e;
 }
+
+/* Buchstabe erscheint beim Laden — von oben, mit Unschärfe */
+@keyframes typewriter {
+  0% {
+    opacity: 0;
+    transform: translateY(8px);
+    filter: blur(3px);
+  }
+  70% {
+    opacity: 1;
+    transform: translateY(-1px);
+    filter: blur(0);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+/* Blink-Cursor am Ende */
+@keyframes blink {
+  0%,
+  50% {
+    opacity: 1;
+  }
+  51%,
+  100% {
+    opacity: 0;
+  }
+}
