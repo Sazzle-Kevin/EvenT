@@ -6,7 +6,7 @@ export default function Header() {
       <nav className="mx-auto flex max-w-6xl items-center justify-between">
         <Link
           to="/"
-          className="text-4xl font-bold text-blue-700 curser-pointer"
+          className="hidden sm:block text-4xl font-bold text-blue-700 curser-pointer"
         >
           EvenT
         </Link>
