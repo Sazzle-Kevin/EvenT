@@ -37,7 +37,10 @@ export default function SignIn() {
       <h2 className="mt-12 mb-20 w-fit text-center scale-400 text-background text-[clamp(.5rem,4vw,1rem)] font-['Impact'] [-webkit-text-stroke:.4px_theme(--color-surface)] hover:text-teal-200/90 hover:scale-408 transition-all duration-1000 ease-in-out cursor-default">
         Sign In
       </h2>
-      <form onSubmit={handleSubmit} className="flex flex-col items-center">
+      <form
+        onSubmit={handleSubmit}
+        className="flex flex-col items-center w-full"
+      >
         <div className="flex items-end pb-4 px-4 h-20 max-w-9/10 divide-x border-2">
           <div className="flex flex-col mx-2 w-1/2">
             <label for="email" className="w-fit cursor-pointer">
