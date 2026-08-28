@@ -24,8 +24,10 @@ export default function Home() {
   if (error) return <p>{error}</p>;
 
   return (
-    <main>
-      <h1>Events</h1>
+    <main className="flex flex-col items-center">
+      <h2 className="mt-12 mb-20 w-fit text-center scale-400 text-background text-[clamp(.5rem,4vw,1rem)] font-['Impact'] [-webkit-text-stroke:.4px_theme(--color-surface)] hover:text-purple-200/90 hover:scale-408 transition-all duration-1000 ease-in-out cursor-default">
+        Even<strong>T</strong>s
+      </h2>
 
       {events.map((event) => (
         <EventCard key={event.id} event={event} />

@@ -20,28 +20,28 @@ export default function Header() {
       <nav className="mx-auto flex max-w-6xl items-center justify-between">
         <Link
           to="/"
-          className="text-4xl font-bold text-blue-700 cursor-pointer select-none"
+          className="hidden sm:block text-4xl font-bold text-blue-700 curser-pointer"
         >
           {letters}
         </Link>
 
         <div className="flex gap-6">
-          <Link to="/" className="hover:text-gray-300 cursor-pointer">
+          <Link to="/" className="hover:text-purple-200 cursor-pointer">
             Home
           </Link>
 
           <Link
             to="/create-event"
-            className="hover:text-gray-300 cursor-pointer"
+            className="hover:text-yellow-200 cursor-pointer"
           >
             Create Event
           </Link>
 
-          <Link to="/signin" className="hover:text-gray-300 cursor-pointer">
+          <Link to="/signin" className="hover:text-teal-200 cursor-pointer">
             Sign In
           </Link>
 
-          <Link to="/signup" className="hover:text-gray-300 cursor-pointer">
+          <Link to="/signup" className="hover:text-green-200 cursor-pointer">
             Sign Up
           </Link>
         </div>

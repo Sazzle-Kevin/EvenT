@@ -8,7 +8,6 @@ async function request(endpoint, options = {}) {
     headers: {
       "Content-Type": "application/json",
       ...(token && { Authorization: `Bearer ${token}` }),
-      ...options.headers,
     },
   });
 
@@ -47,5 +46,11 @@ export function createEvent(eventData) {
   return request("/events", {
     method: "POST",
     body: JSON.stringify(eventData),
+  });
+}
+
+export function deleteEvent(id) {
+  return request(`/events/${id}`, {
+    method: "DELETE",
   });
 }
